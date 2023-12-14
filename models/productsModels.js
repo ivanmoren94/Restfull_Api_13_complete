@@ -7,7 +7,8 @@ const productSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true
+    required: true,
+    min: [0, 'El precio no puede ser menor que 0'] 
   },
   description: {
     type: String,
@@ -15,7 +16,8 @@ const productSchema = new mongoose.Schema({
   },
   size: {
     type: String,
-    enum: ['S', 'M', 'L', 'XL'] // Enumera los valores permitidos
+    enum: ['S', 'M', 'L', 'XL'],// Enumera los valores permitidos
+    default: ['S', 'M', 'L', 'XL'] // Explicamos que podemos poner valores por defecto
   },
   colors: {
     type: [String], // Campo para almacenar múltiples colores
