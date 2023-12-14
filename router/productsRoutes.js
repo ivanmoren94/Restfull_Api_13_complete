@@ -6,9 +6,12 @@ const {
   getProductById,
   updateProduct,
   deleteProduct,
+  getAveragePrice
 } = require("../controllers/productsControllers");
 
 router.get("/", getAllProducts);
+router.get('/average',getAveragePrice)
+
 router.post("/", createProduct);
 router.get("/:id", getProductById);
 router.put("/:id", updateProduct);

@@ -1,8 +1,10 @@
 const userModel = require("../models/userModels"); // Importa el modelo de usuario
+const emailService = require("../services/emailService")
 
 const getUsers = async (req, res) => {
   try {
     const data = await userModel.find(); // Busca todos los usuarios en la base de datos
+
     res.status(200).json({ status: "succeeded", data, error: null }); // Devuelve los usuarios encontrados
   } catch (error) {
     res.status(500).json({ status: "failed", data: null, error: error.message }); // Maneja cualquier error que ocurra
@@ -55,6 +57,13 @@ const addUser = async (req, res) => {
     });
 
     await newUser.save(); // Guarda el nuevo usuario en la base de datos
+    
+    // Envía un correo electrónico cada vez que se agrega un nuevo usuario
+    await emailService.sendEmail(
+      email, 
+      `Gracias por registrarte ${name}`, 
+      `Se ha agregado un nuevo usuario: ${name} (${email}). Gracias por registrarte.`
+    );
     res.status(201).json({ status: "succeeded", newUser, error: null }); // Devuelve el nuevo usuario creado
   } catch (error) {
     res.status(500).json({ status: "failed", data: null, error: error.message }); // Maneja cualquier error que ocurra

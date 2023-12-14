@@ -143,10 +143,65 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const getAveragePrice = async (req, res) => {
+  try {
+    const averagePrice = await Product.aggregate([
+      {
+        $group: {
+          _id: null,
+          average: { $avg: '$price' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          averagePrice: '$average',
+        },
+      },
+    ]);
+
+    // const averagePrice = await Product.aggregate([
+    //   {
+    //     $group: {
+    //       _id: '$brand',
+    //       average: { $avg: '$price' },
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       _id: 0, // Excluye el campo _id del resultado
+    //       marca: '$_id', // Renombra _id a 'marca'
+    //       average: 1 // Incluye el campo 'mediaPrecio'
+    //     },
+    //   },
+    // ]);
+
+    if (averagePrice.length === 0) {
+      return res.status(404).json({
+        status: 'Error',
+        message: 'No hay productos para calcular el promedio de precios',
+      });
+    }
+
+    res.status(200).json({
+      status: 'Success',
+      message: 'Media de precios calculada exitosamente',
+      averagePrice: averagePrice,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Error',
+      message: 'No se pudo calcular la media de precios',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
   updateProduct,
   deleteProduct,
+  getAveragePrice
 };

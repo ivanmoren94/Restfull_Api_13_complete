@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   size: {
-    type: String,
+    type: [String],
     enum: ['S', 'M', 'L', 'XL'],// Enumera los valores permitidos
     default: ['S', 'M', 'L', 'XL'] // Explicamos que podemos poner valores por defecto
   },
