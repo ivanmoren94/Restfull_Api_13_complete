@@ -197,11 +197,52 @@ const getAveragePrice = async (req, res) => {
   }
 };
 
+const addColorsToProduct = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const colorsToAdd = req.body.colors;
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        status: "Error",
+        message: "Producto no encontrado",
+      });
+    }
+
+    // Eliminar colores duplicados antes de agregarlos al producto
+    colorsToAdd.forEach((color) => {
+      if (!product.colors.includes(color)) {
+        product.colors.push(color);
+      }
+    });
+
+    // Ordenar los colores alfabéticamente
+    product.colors.sort();
+
+    const updatedProduct = await product.save();
+
+    res.status(200).json({
+      status: "Success",
+      message: "Colores agregados y ordenados alfabéticamente correctamente",
+      updatedProduct,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Error",
+      message: "No se pudo agregar colores al producto",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
   updateProduct,
   deleteProduct,
-  getAveragePrice
+  getAveragePrice,
+  addColorsToProduct
 };

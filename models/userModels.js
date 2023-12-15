@@ -12,7 +12,16 @@ const userSchema = new Schema({
     required: true, // Campo requerido, no puede estar vacío
     match: [/^\S+@\S+\.\S+$/ , 'Correo incorrecto']
   },
+  age: {
+    type: Number,
+    default:0
+  }
 });
+
+
+// Define el índice en el campo 'age'
+userSchema.index({ age: 1 });
+userSchema.index({ name: 1 });
 
 // ^: Indica el inicio de la cadena.
 // \S+: Coincide con uno o más caracteres que no sean un espacio en blanco. En este caso, antes del símbolo @ busca al menos un carácter que no sea un espacio en blanco.

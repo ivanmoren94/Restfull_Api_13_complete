@@ -108,5 +108,45 @@ const findUsersByLetter = async (req, res) => {
   }
 }
 
+const insertManyUsers = async (req, res) => {
+  try {
+    const totalUsers = 1000000; // Cantidad de usuarios a insertar
 
-module.exports = { getUsers, getUserById, patchById, addUser, deleteUser , countUsers , findUsersByLetter }; // Exporta las funciones para su uso en otros archivos
+    for (let i = 0; i < totalUsers; i++) {
+      const randomAge = Math.floor(Math.random() * 101); // Edades aleatorias entre 0 y 100 años
+      const newUser = new userModel({
+        name: `User_${Math.floor(Math.random() * 1000)}`, // Nombre aleatorio
+        email: `email@gamil.com${Math.floor(Math.random() * 1000)}`,
+        age: randomAge,
+      });
+      await newUser.save(); // Inserta el usuario en la base de datos
+    }
+
+    res.status(201).json({ message: 'Se insertaron los usuarios correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getUsersByAge = async (req, res) => {
+  try {
+    const { age } = req.params; // Obtiene la edad proporcionada en los parámetros de la solicitud
+
+    // Busca todos los usuarios que coincidan con la edad proporcionada
+    const users = await userModel.find({ age: parseInt(age) });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron usuarios con esa edad' });
+    }
+
+    res.status(200).json({ status: "succeeded", users, error: null });
+  } catch (error) {
+    res.status(500).json({ status: "failed", data: null, error: error.message });
+  }
+};
+
+
+
+
+
+module.exports = { getUsers, getUserById, patchById, addUser, deleteUser , countUsers , findUsersByLetter , insertManyUsers ,getUsersByAge}; // Exporta las funciones para su uso en otros archivos
