@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const PORT = 3000;
 const userRouter = require("./router/userRoutes");
 const productRouter = require("./router/productsRoutes");
+const loginRouter = require("./router/loginRoutes");
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger/swaggerConfig');
 
@@ -41,6 +42,7 @@ db.on("disconected", () => {
 
 app.use("/users", userRouter);
 app.use("/products",productRouter)
+app.use("/auth", loginRouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // Ruta para la interfaz de Swagger
 
 
