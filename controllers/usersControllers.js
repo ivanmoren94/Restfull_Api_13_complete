@@ -146,7 +146,16 @@ const getUsersByAge = async (req, res) => {
 };
 
 
+const generatePDFUsers = async(req,res) => {
+  try {
+    
+  } catch (error) {
+    res.status(500).json({ error: 'Error al generar el archivo Excel', error:error.message });
+  }
+}
 
 
 
-module.exports = { getUsers, getUserById, patchById, addUser, deleteUser , countUsers , findUsersByLetter , insertManyUsers ,getUsersByAge}; // Exporta las funciones para su uso en otros archivos
+
+
+module.exports = { getUsers, getUserById, patchById, addUser, deleteUser , countUsers , findUsersByLetter , insertManyUsers ,getUsersByAge , generatePDFUsers}; // Exporta las funciones para su uso en otros archivos

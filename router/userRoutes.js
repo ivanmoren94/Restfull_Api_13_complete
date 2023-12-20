@@ -7,7 +7,8 @@ const {
   countUsers,
   findUsersByLetter,
   insertManyUsers,
-  getUsersByAge
+  getUsersByAge,
+  generatePDFUsers
 } = require("../controllers/usersControllers");
 
 const router = require("express").Router();
@@ -39,7 +40,7 @@ router.get("/count", countUsers); // Obtiene el recuento total de usuarios
 // Se podria poner otra que se llame name ya que las solicitudes a /name se capturarían correctamente por esa ruta específica, 
 //ya que Express coincide con las rutas en orden y la primera que coincida se ejecutará.
 // router.get("/name", findByName); // Nueva ruta para buscar por nombre
-
+router.get("/generatePDFUsers",generatePDFUsers)
 
 
 router.get("/filterByLetters/:letters", findUsersByLetter); // Filtra usuarios por letras en sus nombres
